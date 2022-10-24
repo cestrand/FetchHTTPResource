@@ -8,11 +8,17 @@ namespace FetchHTTPResource
         {
 
             var clientWrapper = new HTTPClientWrapper(httpClient);
-            string pageBody = await clientWrapper.GetString("https://example.com");
-            Console.WriteLine(pageBody);
+            string filePath = await clientWrapper.GetFile("https://example.net/");
+            Console.WriteLine($"Saved to file: {filePath}");
 
-            string pageBody2 = await clientWrapper.GetString("https://exampleeee.com");
-            Console.WriteLine(pageBody2);
+            string filePath2 = await clientWrapper.GetFile("https://github.com/cestrand/FetchHTTPResource/raw/master/bricks.png");
+            Console.WriteLine($"Saved to file: {filePath2}");
+
+            string filePath3 = await clientWrapper.GetFile("https://github.com/cestrand/FetchHTTPResource/raw/master/bricks.png", "./images/");
+            Console.WriteLine($"Saved to file: {filePath3}");
+
+            string filePath4 = await clientWrapper.GetFile("https://github.com/cestrand/FetchHTTPResource/raw/master/bricks.png", "./images/someimage.png");
+            Console.WriteLine($"Saved to file: {filePath4}");
         }
     }
 
