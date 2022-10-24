@@ -3,22 +3,34 @@ namespace FetchHTTPResource
 {
     internal class Program
     {
-        static readonly HttpClient client = new HttpClient();
+        static readonly HttpClient httpClient = new HttpClient();
         static async Task Main(string[] args)
         {
 
-            string pageBody = await FetchPage("https://example.com");
+            var clientWrapper = new HTTPClientWrapper(httpClient);
+            string pageBody = await clientWrapper.GetString("https://example.com");
             Console.WriteLine(pageBody);
 
-            string pageBody2 = await FetchPage("https://exampleeee.com");
+            string pageBody2 = await clientWrapper.GetString("https://exampleeee.com");
             Console.WriteLine(pageBody2);
         }
+    }
 
-        static async Task<string> FetchPage(string url)
+
+    internal class HTTPClientWrapper
+    {
+        private HttpClient client;
+
+        public HTTPClientWrapper(HttpClient client)
+        {
+            this.client = client;
+        }
+
+        public async Task<string> GetString(string uri)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync(url);
+                HttpResponseMessage response = await client.GetAsync(uri);
                 response.EnsureSuccessStatusCode();
                 string responseBody = await response.Content.ReadAsStringAsync();
 
